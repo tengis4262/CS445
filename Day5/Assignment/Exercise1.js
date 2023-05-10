@@ -5,33 +5,36 @@
 
 const shoppingCart = (() => {
     let basket = [];
+    const upsertItem = item => {
+        const index = basket.findIndex(basketItem => basketItem.id === item.id);
+        if (index === -1) {
+            basket.push(item);
+        } else {
+            basket[index] = item;
+        }
+    }
+    const removeItemById = id => {
+        basket = basket.filter(item => item.id !== id);
+    }
+
+    const getItemsCount = () => {
+        return basket.length;
+    }
+
+    const getTotalPrice = () => {
+        let totalPrice = 0;
+        for (const item of basket) {
+            totalPrice = totalPrice + (item.count * item.product.price);
+        }
+
+        return basket.reduce((total,item)=> total += item.product.price * item.count,0)
+        return totalPrice;
+    }
     return {
-        upsertItem: (item) => {
-            const index = basket.findIndex(basketItem => basketItem.id === item.id);
-            if (index === -1) {
-                basket.push(item);
-            } else {
-                basket[index] = item;
-            }
-        },
-
-
-
-        removeItemById: (id) => {
-            basket = basket.filter(item => item.id !== id);
-        },
-
-        getItemsCount: () => {
-            return basket.length;
-        },
-
-        getTotalPrice: () => {
-            let totalPrice = 0;
-            for (const item of basket) {
-                totalPrice = totalPrice + (item.count * item.product.price);
-            }
-            return totalPrice;
-        },
+        upsertItem,
+        removeItemById,
+        getItemsCount,
+        getTotalPrice
     };
 
 
