@@ -13,3 +13,18 @@ const counterModule = (function() {
 
 counterModule.incrementCounter();
 counterModule.resetCounter();
+
+
+const countMod = (()=>{
+    let counter = 0;
+    const incrementCounter = ()=>{
+        return counter++;
+    };
+    const resetCounter = ()=>{
+        counter = 0;
+    }
+    return {
+        incrementCounter,
+        resetCounter
+    }
+})();
