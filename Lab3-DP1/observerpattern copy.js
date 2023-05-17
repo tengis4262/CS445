@@ -1,0 +1,46 @@
+class Subject {
+
+    constructor() {
+        this.observers = {};
+    }
+
+    on(event, fn) {
+        // if (this.observers[event]) {
+        //     this.observers[event].push(fn);
+        // } else {
+        //     this.observers[event] = [fn];
+        // }
+
+        if(!this.observers[event]) {
+            this.observers[event] = [];
+        }
+        this.observers[event].push(fn);
+    }
+
+    emit(event, message) {
+        this.observers[event].forEach(fn => fn(event, message));
+    }
+
+}
+
+
+const subject = new Subject();
+
+
+subject.on('eat', console.log); // register an observer
+subject.on('study', console.log); // register an observer
+
+function foo(event, msg) {
+    // console.log('foo: ' + msg + '************' + event);
+}
+subject.on('eat', foo);
+subject.on('study', foo);
+
+subject.emit('eat', 'Corn');
+//output for Line above: subject.emit('eat', 'Corn');
+// Corn
+// foo: Corn
+subject.emit('study', 'cs445');
+//output for Line above: subject.emit('study', 'cs445');
+// cs445
+// foo: cs445
